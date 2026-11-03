@@ -46,7 +46,7 @@ export const CameraView: React.FC<CameraViewProps> = ({
   const isStreaming = cameraState.isStreaming;
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center bg-[#181A20] border-2 border-slate-200/90 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl min-h-[200px] sm:min-h-[280px] md:min-h-[360px] lg:max-h-[440px]">
+    <div className="relative w-full h-full flex flex-col items-center justify-center bg-[#181A20] border-2 border-slate-200/90 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl min-h-[240px] sm:min-h-[320px] md:min-h-[400px] lg:max-h-[480px] xl:max-h-[520px]">
       {/* Industrial Viewfinder Corner Brackets */}
       <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 w-4 sm:w-6 h-4 sm:h-6 border-t-[2.5px] sm:border-t-[3.5px] border-l-[2.5px] sm:border-l-[3.5px] border-white/80 rounded-tl-md pointer-events-none z-20" />
       <div className="absolute top-2.5 sm:top-4 right-2.5 sm:right-4 w-4 sm:w-6 h-4 sm:h-6 border-t-[2.5px] sm:border-t-[3.5px] border-r-[2.5px] sm:border-r-[3.5px] border-white/80 rounded-tr-md pointer-events-none z-20" />

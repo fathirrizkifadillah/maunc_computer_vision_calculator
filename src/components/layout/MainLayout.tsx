@@ -23,17 +23,17 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
       {/* Mobile: flows naturally with smooth touch scrolling */}
       <main className="flex-1 min-h-0 w-full max-w-[1440px] mx-auto px-3 sm:px-4 md:px-6 py-2 md:py-2.5 flex flex-col justify-center">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 md:gap-5 lg:gap-6 items-center h-full">
-          {/* Left Column: Prominent Robotic Tiger Mascot (~22% width on desktop) */}
-          <div className="hidden lg:flex lg:col-span-3 h-full max-h-[440px] items-end justify-center relative overflow-hidden rounded-2xl">
+          {/* Left Column: Prominent Robotic Tiger Mascot (~17% width on desktop) */}
+          <div className="hidden lg:flex lg:col-span-2 h-full max-h-[480px] xl:max-h-[520px] items-end justify-center relative overflow-hidden rounded-2xl">
             {mascotNode}
           </div>
 
-          {/* Center Column: Dominant Live Camera Viewport (~52% width on desktop) */}
-          <div className="col-span-1 lg:col-span-6 w-full h-[220px] sm:h-[300px] md:h-[380px] lg:h-full lg:max-h-[440px] flex flex-col">
+          {/* Center Column: Dominant Live Camera Viewport (~58% width on desktop) */}
+          <div className="col-span-1 lg:col-span-7 w-full h-[260px] sm:h-[340px] md:h-[420px] lg:h-full lg:max-h-[480px] xl:max-h-[520px] flex flex-col">
             {cameraNode}
           </div>
 
-          {/* Right Column: Calculator Card (~26% width on desktop) */}
+          {/* Right Column: Calculator Card (~25% width on desktop) */}
           <div className="col-span-1 lg:col-span-3 w-full flex flex-col justify-center">
             {calculatorNode}
 
