@@ -119,15 +119,24 @@ export function useCamera(): UseCameraReturn {
       streamRef.current = stream;
 
       if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await new Promise<void>((resolve) => {
-          if (!videoRef.current) return resolve();
-          videoRef.current.onloadedmetadata = () => {
-            videoRef.current?.play().then(() => resolve()).catch(() => resolve());
-          };
-          // Timeout safety in case metadata event fires before handler
-          setTimeout(resolve, 500);
-        });
+        const video = videoRef.current;
+        video.srcObject = stream;
+        try {
+          await video.play();
+        } catch (playErr) {
+          console.warn('Direct play error, waiting for canplay:', playErr);
+          await new Promise<void>((resolve) => {
+            const onPlayable = () => {
+              video.removeEventListener('loadedmetadata', onPlayable);
+              video.removeEventListener('canplay', onPlayable);
+              video.play().catch(() => {});
+              resolve();
+            };
+            video.addEventListener('loadedmetadata', onPlayable);
+            video.addEventListener('canplay', onPlayable);
+            setTimeout(resolve, 800);
+          });
+        }
       }
 
       setCameraState({

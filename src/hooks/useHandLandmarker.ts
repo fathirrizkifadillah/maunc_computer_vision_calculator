@@ -10,6 +10,7 @@ export interface UseHandLandmarkerProps {
 
 export interface UseHandLandmarkerReturn {
   isModelLoading: boolean;
+  isModelReady: boolean;
   modelError: string | null;
   landmarks: HandLandmarks | null;
   handedness: 'Left' | 'Right';
@@ -21,7 +22,8 @@ export function useHandLandmarker({
   isStreaming,
   onLandmarksDetected,
 }: UseHandLandmarkerProps): UseHandLandmarkerReturn {
-  const [isModelLoading, setIsModelLoading] = useState<boolean>(false);
+  const [isModelLoading, setIsModelLoading] = useState<boolean>(true);
+  const [isModelReady, setIsModelReady] = useState<boolean>(false);
   const [modelError, setModelError] = useState<string | null>(null);
   const [landmarks, setLandmarks] = useState<HandLandmarks | null>(null);
   const [handedness, setHandedness] = useState<'Left' | 'Right'>('Right');
@@ -33,17 +35,22 @@ export function useHandLandmarker({
   const callbackRef = useRef(onLandmarksDetected);
   callbackRef.current = onLandmarksDetected;
 
-  // Initialize MediaPipe Hand Landmarker once
+  // 1. Initialize MediaPipe Hand Landmarker immediately on page mount
   useEffect(() => {
     let isCancelled = false;
 
     async function initMediaPipe() {
-      if (landmarkerRef.current) return;
+      if (landmarkerRef.current) {
+        setIsModelReady(true);
+        setIsModelLoading(false);
+        return;
+      }
+
       setIsModelLoading(true);
       setModelError(null);
 
       try {
-        // Attempt local WASM first for 100% offline expo readiness
+        // Step A: Resolve Vision WASM (try local first, fallback to CDN)
         let visionResolver;
         try {
           visionResolver = await FilesetResolver.forVisionTasks('/wasm');
@@ -56,17 +63,50 @@ export function useHandLandmarker({
 
         if (isCancelled) return;
 
-        const handLandmarker = await HandLandmarker.createFromOptions(visionResolver, {
-          baseOptions: {
-            modelAssetPath: '/models/hand_landmarker.task',
-            delegate: 'GPU',
-          },
-          runningMode: 'VIDEO',
-          numHands: 1,
-          minHandDetectionConfidence: 0.5,
-          minHandPresenceConfidence: 0.5,
-          minTrackingConfidence: 0.5,
-        });
+        // Step B: Create HandLandmarker (try local model with GPU, fallback to CPU / CDN)
+        let handLandmarker: HandLandmarker;
+        try {
+          handLandmarker = await HandLandmarker.createFromOptions(visionResolver, {
+            baseOptions: {
+              modelAssetPath: '/models/hand_landmarker.task',
+              delegate: 'GPU',
+            },
+            runningMode: 'VIDEO',
+            numHands: 1,
+            minHandDetectionConfidence: 0.5,
+            minHandPresenceConfidence: 0.5,
+            minTrackingConfidence: 0.5,
+          });
+        } catch (gpuErr) {
+          console.warn('GPU model initialization failed, attempting fallback with CPU:', gpuErr);
+          try {
+            handLandmarker = await HandLandmarker.createFromOptions(visionResolver, {
+              baseOptions: {
+                modelAssetPath: '/models/hand_landmarker.task',
+                delegate: 'CPU',
+              },
+              runningMode: 'VIDEO',
+              numHands: 1,
+              minHandDetectionConfidence: 0.5,
+              minHandPresenceConfidence: 0.5,
+              minTrackingConfidence: 0.5,
+            });
+          } catch (localModelErr) {
+            console.warn('Local model failed, fetching official CDN model:', localModelErr);
+            handLandmarker = await HandLandmarker.createFromOptions(visionResolver, {
+              baseOptions: {
+                modelAssetPath:
+                  'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task',
+                delegate: 'GPU',
+              },
+              runningMode: 'VIDEO',
+              numHands: 1,
+              minHandDetectionConfidence: 0.5,
+              minHandPresenceConfidence: 0.5,
+              minTrackingConfidence: 0.5,
+            });
+          }
+        }
 
         if (isCancelled) {
           handLandmarker.close();
@@ -74,12 +114,14 @@ export function useHandLandmarker({
         }
 
         landmarkerRef.current = handLandmarker;
+        setIsModelReady(true);
         setIsModelLoading(false);
       } catch (err: any) {
-        console.error('Failed to initialize MediaPipe HandLandmarker:', err);
+        console.error('Fatal MediaPipe initialization error:', err);
         if (!isCancelled) {
           setModelError(err.message || 'Gagal memuat model pendeteksi tangan MediaPipe.');
           setIsModelLoading(false);
+          setIsModelReady(false);
         }
       }
     }
@@ -99,9 +141,11 @@ export function useHandLandmarker({
     };
   }, []);
 
-  // Inference loop tied to video streaming
+  // 2. Continuous Inference Loop
+  // CRITICAL FIX: Depends on both isStreaming AND isModelReady so that if user starts camera
+  // before the model finishes downloading, the loop starts automatically the millisecond the model is ready!
   useEffect(() => {
-    if (!isStreaming || !landmarkerRef.current) {
+    if (!isStreaming || !isModelReady || !landmarkerRef.current) {
       if (animFrameIdRef.current) {
         cancelAnimationFrame(animFrameIdRef.current);
         animFrameIdRef.current = null;
@@ -170,10 +214,11 @@ export function useHandLandmarker({
         animFrameIdRef.current = null;
       }
     };
-  }, [isStreaming, videoRef]);
+  }, [isStreaming, isModelReady, videoRef]);
 
   return {
     isModelLoading,
+    isModelReady,
     modelError,
     landmarks,
     handedness,
