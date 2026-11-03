@@ -46,12 +46,12 @@ export const CameraView: React.FC<CameraViewProps> = ({
   const isStreaming = cameraState.isStreaming;
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center bg-[#181A20] border-2 border-slate-200/90 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl min-h-[260px] sm:min-h-[340px] md:min-h-[380px] lg:max-h-[440px]">
+    <div className="relative w-full h-full flex flex-col items-center justify-center bg-[#181A20] border-2 border-slate-200/90 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl min-h-[200px] sm:min-h-[280px] md:min-h-[360px] lg:max-h-[440px]">
       {/* Industrial Viewfinder Corner Brackets */}
-      <div className="absolute top-3 sm:top-5 left-3 sm:left-5 w-5 sm:w-7 h-5 sm:h-7 border-t-[3px] sm:border-t-[3.5px] border-l-[3px] sm:border-l-[3.5px] border-white/80 rounded-tl-lg pointer-events-none z-20" />
-      <div className="absolute top-3 sm:top-5 right-3 sm:right-5 w-5 sm:w-7 h-5 sm:h-7 border-t-[3px] sm:border-t-[3.5px] border-r-[3px] sm:border-r-[3.5px] border-white/80 rounded-tr-lg pointer-events-none z-20" />
-      <div className="absolute bottom-3 sm:bottom-5 left-3 sm:left-5 w-5 sm:w-7 h-5 sm:h-7 border-b-[3px] sm:border-b-[3.5px] border-l-[3px] sm:border-l-[3.5px] border-white/80 rounded-bl-lg pointer-events-none z-20" />
-      <div className="absolute bottom-3 sm:bottom-5 right-3 sm:right-5 w-5 sm:w-7 h-5 sm:h-7 border-b-[3px] sm:border-b-[3.5px] border-r-[3px] sm:border-r-[3.5px] border-white/80 rounded-br-lg pointer-events-none z-20" />
+      <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 w-4 sm:w-6 h-4 sm:h-6 border-t-[2.5px] sm:border-t-[3.5px] border-l-[2.5px] sm:border-l-[3.5px] border-white/80 rounded-tl-md pointer-events-none z-20" />
+      <div className="absolute top-2.5 sm:top-4 right-2.5 sm:right-4 w-4 sm:w-6 h-4 sm:h-6 border-t-[2.5px] sm:border-t-[3.5px] border-r-[2.5px] sm:border-r-[3.5px] border-white/80 rounded-tr-md pointer-events-none z-20" />
+      <div className="absolute bottom-2.5 sm:bottom-4 left-2.5 sm:left-4 w-4 sm:w-6 h-4 sm:h-6 border-b-[2.5px] sm:border-b-[3.5px] border-l-[2.5px] sm:border-l-[3.5px] border-white/80 rounded-bl-md pointer-events-none z-20" />
+      <div className="absolute bottom-2.5 sm:bottom-4 right-2.5 sm:right-4 w-4 sm:w-6 h-4 sm:h-6 border-b-[2.5px] sm:border-b-[3.5px] border-r-[2.5px] sm:border-r-[3.5px] border-white/80 rounded-br-md pointer-events-none z-20" />
 
       {/* 1. Video Element (mirrored) */}
       <video
@@ -87,13 +87,13 @@ export const CameraView: React.FC<CameraViewProps> = ({
 
       {/* 4. Pre-Activation Overlay: Before Camera is Activated */}
       {!isStreaming && cameraState.status !== 'error' && cameraState.status !== 'permission_denied' && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-10 bg-[#181A20]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-3 sm:p-5 text-center z-10 bg-[#181A20]">
           {/* White Outline Camera Icon */}
-          <div className="mb-2 sm:mb-3 text-white">
-            <Camera size={44} weight="light" className="sm:w-14 sm:h-14" />
+          <div className="mb-1.5 sm:mb-2.5 text-white">
+            <Camera size={36} weight="light" className="sm:w-12 sm:h-12" />
           </div>
 
-          <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-4 sm:mb-6 tracking-wide">
+          <h3 className="text-sm sm:text-base md:text-xl font-bold text-white mb-3 sm:mb-5 tracking-wide">
             Kamera belum aktif
           </h3>
 
@@ -101,16 +101,16 @@ export const CameraView: React.FC<CameraViewProps> = ({
           <button
             onClick={onStartCamera}
             disabled={cameraState.status === 'requesting'}
-            className="flex items-center gap-2 sm:gap-2.5 px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-xl sm:rounded-2xl bg-maunc-yellow text-slate-950 font-bold text-sm sm:text-base hover:bg-amber-400 active:scale-[0.98] transition-all duration-150 shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            className="flex items-center gap-2 px-5 sm:px-7 py-2 sm:py-3 rounded-xl sm:rounded-2xl bg-maunc-yellow text-slate-950 font-bold text-xs sm:text-base hover:bg-amber-400 active:scale-[0.98] transition-all duration-150 shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {cameraState.status === 'requesting' ? (
               <>
-                <ArrowsClockwise size={18} className="animate-spin text-slate-950" />
-                <span>Menghubungkan Kamera...</span>
+                <ArrowsClockwise size={16} className="animate-spin text-slate-950 sm:w-5 sm:h-5" />
+                <span>Menghubungkan...</span>
               </>
             ) : (
               <>
-                <Camera size={18} weight="bold" className="text-slate-950 sm:w-5 sm:h-5" />
+                <Camera size={16} weight="bold" className="text-slate-950 sm:w-5 sm:h-5" />
                 <span>Aktifkan Kamera</span>
               </>
             )}
@@ -120,23 +120,23 @@ export const CameraView: React.FC<CameraViewProps> = ({
 
       {/* 5. Error Overlay */}
       {(cameraState.errorMessage || modelError) && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 text-center z-30 bg-[#181A20]/95 backdrop-blur-sm">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-red-900/40 border border-red-500/60 flex items-center justify-center mb-2.5 text-red-400">
-            <WarningCircle size={28} weight="fill" className="sm:w-8 sm:h-8" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-3 sm:p-5 text-center z-30 bg-[#181A20]/95 backdrop-blur-sm">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-red-900/40 border border-red-500/60 flex items-center justify-center mb-2 text-red-400">
+            <WarningCircle size={24} weight="fill" className="sm:w-7 sm:h-7" />
           </div>
 
-          <h3 className="text-sm sm:text-base font-bold text-white mb-1">
+          <h3 className="text-xs sm:text-sm font-bold text-white mb-1">
             Kendala Akses Kamera
           </h3>
-          <p className="text-xs text-slate-300 max-w-md mb-4 sm:mb-5 leading-relaxed">
+          <p className="text-[11px] sm:text-xs text-slate-300 max-w-sm mb-3 sm:mb-4 leading-relaxed">
             {cameraState.errorMessage || modelError}
           </p>
 
           <button
             onClick={onStartCamera}
-            className="flex items-center gap-2 px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-maunc-yellow text-slate-950 font-bold text-xs sm:text-sm hover:bg-amber-400 active:scale-[0.98] transition-all shadow-md cursor-pointer"
+            className="flex items-center gap-1.5 px-4 sm:px-5 py-1.5 sm:py-2 rounded-lg bg-maunc-yellow text-slate-950 font-bold text-xs sm:text-sm hover:bg-amber-400 active:scale-[0.98] transition-all shadow-md cursor-pointer"
           >
-            <ArrowsClockwise size={16} weight="bold" />
+            <ArrowsClockwise size={14} weight="bold" />
             <span>Coba Lagi</span>
           </button>
         </div>
@@ -144,9 +144,9 @@ export const CameraView: React.FC<CameraViewProps> = ({
 
       {/* 6. Loading Model Pill during initialization */}
       {isModelLoading && isStreaming && (
-        <div className="absolute top-4 sm:top-5 left-12 sm:left-14 z-20 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-black/75 backdrop-blur border border-white/20 text-[10px] sm:text-[11px] text-white flex items-center gap-1.5 sm:gap-2 shadow-md">
-          <ArrowsClockwise size={14} className="animate-spin text-maunc-yellow" />
-          <span>Memuat model MediaPipe...</span>
+        <div className="absolute top-3 left-10 sm:top-4 sm:left-12 z-20 px-2 sm:px-3 py-1 rounded-lg bg-black/75 backdrop-blur border border-white/20 text-[9px] sm:text-[11px] text-white flex items-center gap-1.5 shadow-md">
+          <ArrowsClockwise size={12} className="animate-spin text-maunc-yellow" />
+          <span>Memuat model...</span>
         </div>
       )}
     </div>
