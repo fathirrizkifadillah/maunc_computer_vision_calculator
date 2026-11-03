@@ -22,13 +22,13 @@ export const CalculatorPanel: React.FC<CalculatorPanelProps> = ({
   const isUnarySquareRoot = state.operator === '√';
 
   return (
-    <div className="w-full bg-white border-2 border-slate-200/90 rounded-3xl p-6 shadow-xl flex flex-col gap-4">
+    <div className="w-full bg-white border-2 border-slate-200/90 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 md:p-5 shadow-xl flex flex-col gap-2.5 sm:gap-3">
       {/* Panel Header */}
-      <div className="flex items-center gap-2.5 pb-1">
-        <div className="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-800">
-          <Calculator size={20} weight="fill" />
+      <div className="flex items-center gap-2 pb-0.5">
+        <div className="w-7 h-7 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-800">
+          <Calculator size={18} weight="fill" />
         </div>
-        <h2 className="text-xl font-bold tracking-tight text-slate-900">
+        <h2 className="text-lg font-bold tracking-tight text-slate-900">
           Kalkulator
         </h2>
       </div>
