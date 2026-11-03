@@ -63,9 +63,9 @@ export const RoboticTiger: React.FC<RoboticTigerProps> = ({
                 }}
                 exit={{ opacity: 0, scale: 0 }}
                 transition={{
-                  duration: 3.8,
+                  duration: 3.6,
                   repeat: Infinity,
-                  repeatDelay: 1.4,
+                  repeatDelay: 1.6,
                   ease: 'easeOut',
                 }}
                 aria-hidden="true"
@@ -92,7 +92,7 @@ export const RoboticTiger: React.FC<RoboticTigerProps> = ({
                 ? { rotate: 0 }
                 : isExcited
                 ? {
-                    rotate: [0, 7, -3, 9, -2, 6, 0],
+                    rotate: [0, 7.5, 0, -4, 0],
                     transition: {
                       duration: 1.2,
                       repeat: Infinity,
@@ -100,7 +100,7 @@ export const RoboticTiger: React.FC<RoboticTigerProps> = ({
                     },
                   }
                 : {
-                    rotate: [0, 4, -2, 5.5, -1, 3, 0],
+                    rotate: [0, 4.5, 0, -2.5, 0],
                     transition: {
                       duration: 2.8,
                       repeat: Infinity,
@@ -111,76 +111,81 @@ export const RoboticTiger: React.FC<RoboticTigerProps> = ({
             loading="eager"
           />
 
-          {/* 3. BODY LAYER (Middle layer: Torso, robotic & organic arms, jacket, pants, legs) */}
-          <motion.img
-            src={ASSET_MANIFEST.mascotBody}
-            alt="Badan Maskot MAUNC"
-            className="relative z-10 w-full h-full object-contain pointer-events-none select-none drop-shadow-md"
+          {/* 3. SYNCHRONIZED BODY & HEAD WRAPPER */}
+          {/* Breathing & natural vertical motion applies to both torso and head together */}
+          {/* so there is ZERO vertical displacement between collar and chin! */}
+          <motion.div
+            className="relative z-10 w-full h-full"
             style={{
               transformOrigin: '50% 90%',
               willChange: 'transform',
             }}
             animate={
               prefersReducedMotion
-                ? { scaleY: 1, translateY: 0, rotate: 0 }
+                ? { y: 0, rotate: 0 }
                 : {
-                    scaleY: [1, 1.014, 1],
-                    translateY: [0, -3.5, 0],
-                    rotate: [0, 0.35, -0.35, 0],
+                    y: [0, -3.5, 0],
+                    rotate: [0, 0.2, -0.2, 0],
                   }
             }
             transition={{
-              duration: 3.6,
+              duration: 3.4,
               repeat: Infinity,
               ease: 'easeInOut',
             }}
-            loading="eager"
-          />
+          >
+            {/* 3A. BODY LAYER (Middle layer: Torso, complete shoulders, jacket, pants, legs) */}
+            <img
+              src={ASSET_MANIFEST.mascotBody}
+              alt="Badan Maskot MAUNC"
+              className="relative z-10 w-full h-full object-contain pointer-events-none select-none drop-shadow-md"
+              loading="eager"
+            />
 
-          {/* 4. HEAD LAYER (Front layer: Face, cybernetic eye, ears, jaw & chin fur over collar) */}
-          <motion.img
-            src={ASSET_MANIFEST.mascotHead}
-            alt="Kepala Maskot MAUNC"
-            className="absolute inset-0 z-20 w-full h-full object-contain pointer-events-none select-none"
-            style={{
-              transformOrigin: '49.4% 25.9%',
-              willChange: 'transform',
-            }}
-            animate={
-              prefersReducedMotion
-                ? { rotate: 0 }
-                : isExcited
-                ? {
-                    rotate: [0, 1.5, -1.5, 0],
-                    transition: {
-                      duration: 1.4,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    },
-                  }
-                : isStreaming
-                ? {
-                    rotate: [0, -0.8, 0.8, 0],
-                    transition: {
-                      duration: 3.2,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    },
-                  }
-                : {
-                    // Impatient head shake when camera is inactive:
-                    // Stays attentive, then performs subtle robotic left/right shake and settles
-                    rotate: [0, 0, -3, 3, -2, 1.5, 0, 0],
-                    transition: {
-                      duration: 4.4,
-                      repeat: Infinity,
-                      times: [0, 0.45, 0.53, 0.61, 0.69, 0.76, 0.83, 1],
-                      ease: 'easeInOut',
-                    },
-                  }
-            }
-            loading="eager"
-          />
+            {/* 3B. HEAD LAYER (Front layer: Face, cybernetic eye, ears, whiskers, chin tuft) */}
+            {/* Sits naturally over collar socket with silky-smooth organic neck tilt */}
+            <motion.img
+              src={ASSET_MANIFEST.mascotHead}
+              alt="Kepala Maskot MAUNC"
+              className="absolute inset-0 z-20 w-full h-full object-contain pointer-events-none select-none"
+              style={{
+                transformOrigin: '49.4% 25.5%',
+                willChange: 'transform',
+              }}
+              animate={
+                prefersReducedMotion
+                  ? { rotate: 0 }
+                  : isExcited
+                  ? {
+                      rotate: [0, 1.2, 0, -1.2, 0],
+                      transition: {
+                        duration: 1.4,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      },
+                    }
+                  : isStreaming
+                  ? {
+                      rotate: [0, -0.7, 0, 0.7, 0],
+                      transition: {
+                        duration: 3.4,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      },
+                    }
+                  : {
+                      // Smooth continuous head motion when waiting for camera
+                      rotate: [0, -1.8, 0, 1.8, 0],
+                      transition: {
+                        duration: 3.8,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      },
+                    }
+              }
+              loading="eager"
+            />
+          </motion.div>
         </div>
       </div>
     </div>
