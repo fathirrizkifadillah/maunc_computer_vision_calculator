@@ -22,18 +22,6 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Center: Understated Industrial Vision Interface Badge */}
-        <div className="hidden md:flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-50 border border-slate-200/90 text-slate-700 shadow-xs">
-          <span className="w-2 h-2 rounded-full bg-maunc-yellow animate-pulse" />
-          <span className="text-[11px] font-mono font-bold tracking-wider text-slate-900 uppercase">
-            VISION INTERFACE
-          </span>
-          <span className="text-slate-300 font-mono text-[11px]">/</span>
-          <span className="text-[10px] font-sans font-medium text-slate-600 tracking-tight">
-            Gesture Control System
-          </span>
-        </div>
-
         {/* Right: Official MAUNC Yellow Stripes (///) */}
         <div className="flex items-center gap-1 md:gap-1.5 shrink-0">
           <div className="w-2 md:w-2.5 h-5 md:h-6 bg-maunc-yellow -skew-x-[28deg] rounded-[1px]" />

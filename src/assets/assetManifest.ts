@@ -7,6 +7,7 @@
 export const ASSET_MANIFEST = {
   logo: '/elements/Logo MAUNC.png',
   mascot: '/elements/maunc_mascot_nobg.png',
+  mascotHead: '/elements/maunc_mascot_head.png',
   mascotBody: '/elements/maunc_mascot_body.png',
   mascotTail: '/elements/maunc_mascot_tail.png',
   mascotOriginal: '/elements/maunc_mascot.jpg',
