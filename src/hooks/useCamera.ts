@@ -49,12 +49,13 @@ export function useCamera(): UseCameraReturn {
       errorMessage: null,
     }));
 
+    let videoDevicesCount = -1;
+
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         throw new Error('Browser Anda tidak mendukung akses webcam (MediaDevices API tidak tersedia).');
       }
 
-      let videoDevicesCount = -1;
       try {
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoDevices = devices.filter((d) => d.kind === 'videoinput');
